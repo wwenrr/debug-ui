@@ -46,7 +46,17 @@
     toggle.type = "button";
     toggle.className = "cvv-toc-toggle";
     toggle.setAttribute("aria-expanded", "false");
-    toggle.textContent = "Table of contents";
+
+    const title = document.createElement("span");
+    title.className = "cvv-toc-title";
+    title.textContent = "Table of contents";
+
+    const meta = document.createElement("span");
+    meta.className = "cvv-toc-meta";
+    meta.textContent = `${headings.length} sections`;
+
+    toggle.appendChild(title);
+    toggle.appendChild(meta);
 
     const panel = document.createElement("div");
     panel.className = "cvv-toc-panel";
