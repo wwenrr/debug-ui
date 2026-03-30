@@ -116,23 +116,25 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 44px;
-  padding: 10px 24px;
+  min-height: 46px;
+  padding: 11px 34px;
   border-radius: 999px;
-  background: #1f2833;
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.96rem;
+  background: #1b2a3a !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: 0.99rem;
   letter-spacing: 0;
-  font-weight: 550;
-  box-shadow: 0 6px 16px rgba(18, 26, 36, 0.16);
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px rgba(16, 30, 44, 0.2);
   transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 
 .cvv-button-cta:hover {
-  background: #141b24;
+  background: #112031 !important;
+  color: #ffffff !important;
   transform: translateY(-1px);
-  box-shadow: 0 10px 20px rgba(18, 26, 36, 0.2);
+  box-shadow: 0 12px 24px rgba(16, 30, 44, 0.22);
 }
 
 .cvv-button-cta-disabled {
@@ -235,13 +237,13 @@
 
 .cvv-faq-list {
   list-style: none;
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   padding: 0;
-  border-top: 1px solid #e6eaf0;
+  border-top: 1px solid #dfe4eb;
 }
 
 .cvv-faq-item {
-  border-bottom: 1px solid #e6eaf0;
+  border-bottom: 1px solid #dfe4eb;
   padding: 0;
   margin: 0;
 }
@@ -255,17 +257,20 @@
   justify-content: space-between;
   gap: 12px;
   cursor: pointer;
-  padding: 14px 0;
-  color: #2d3f52;
-  font-size: 0.98rem;
-  font-weight: 600;
+  padding: 16px 0;
+  color: #1f2f43;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .cvv-faq-toggle::after {
   content: "▾";
-  color: #637283;
-  font-size: 0.8rem;
+  color: #2f4156;
+  font-size: 0.78rem;
   transition: transform 160ms ease;
+  margin-left: 14px;
+  flex-shrink: 0;
 }
 
 .cvv-faq-item:not(.is-open) .cvv-faq-toggle::after {
@@ -274,8 +279,10 @@
 
 .cvv-faq-answer {
   display: none;
-  padding: 0 0 14px;
-  color: var(--cvv-text-muted);
+  padding: 2px 0 16px;
+  color: #2f4156;
+  font-size: 1.02rem;
+  line-height: 1.56;
 }
 
 .cvv-faq-item.is-open .cvv-faq-answer {
@@ -311,5 +318,11 @@
 
   .cvv-toc-panel {
     padding: 0 12px 12px;
+  }
+
+  .cvv-button-cta {
+    white-space: normal;
+    text-align: center;
+    padding: 11px 20px;
   }
 }

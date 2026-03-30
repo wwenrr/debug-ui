@@ -195,13 +195,17 @@
       button.type = "button";
       button.className = "cvv-faq-toggle";
       button.textContent = question;
+      button.setAttribute("aria-expanded", "false");
 
       const panel = document.createElement("div");
       panel.className = "cvv-faq-answer";
       panel.textContent = answer;
+      panel.hidden = true;
 
       button.addEventListener("click", () => {
-        item.classList.toggle("is-open");
+        const isOpen = item.classList.toggle("is-open");
+        button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        panel.hidden = !isOpen;
       });
 
       item.appendChild(button);
@@ -235,7 +239,7 @@
       list.innerHTML = "";
       pairs.forEach((pair, index) => {
         const item = buildFaqItem(pair.question, pair.answer);
-        if (index < 2) item.classList.add("is-open");
+        if (index < 1) { item.classList.add("is-open"); item.querySelector(".cvv-faq-toggle")?.setAttribute("aria-expanded", "true"); const panel = item.querySelector(".cvv-faq-answer"); if (panel) panel.hidden = false; }
         list.appendChild(item);
       });
       return;
@@ -253,7 +257,7 @@
       list.innerHTML = "";
       plainPairs.forEach((pair, index) => {
         const item = buildFaqItem(pair.question, pair.answer);
-        if (index < 2) item.classList.add("is-open");
+        if (index < 1) { item.classList.add("is-open"); item.querySelector(".cvv-faq-toggle")?.setAttribute("aria-expanded", "true"); const panel = item.querySelector(".cvv-faq-answer"); if (panel) panel.hidden = false; }
         list.appendChild(item);
       });
       return;
@@ -275,13 +279,17 @@
       button.type = "button";
       button.className = "cvv-faq-toggle";
       button.innerHTML = question;
+      button.setAttribute("aria-expanded", "false");
 
       const panel = document.createElement("div");
       panel.className = "cvv-faq-answer";
       panel.innerHTML = answer;
+      panel.hidden = true;
 
       button.addEventListener("click", () => {
-        item.classList.toggle("is-open");
+        const isOpen = item.classList.toggle("is-open");
+        button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        panel.hidden = !isOpen;
       });
 
       item.appendChild(button);
@@ -289,7 +297,7 @@
       faqItems.push(item);
     });
 
-    faqItems.slice(0, 2).forEach((faqItem) => faqItem.classList.add("is-open"));
+    faqItems.slice(0, 1).forEach((faqItem) => { faqItem.classList.add("is-open"); const toggle = faqItem.querySelector(".cvv-faq-toggle"); const panel = faqItem.querySelector(".cvv-faq-answer"); if (toggle) toggle.setAttribute("aria-expanded", "true"); if (panel) panel.hidden = false; });
   };
 
   const initCvvBlocksRenderer = () => {
