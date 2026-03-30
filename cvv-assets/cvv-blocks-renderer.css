@@ -1,8 +1,15 @@
 .cvv-article {
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  color: #111827;
+  color: #0f172a;
   line-height: 1.7;
   font-size: 16px;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
 }
 
 .cvv-article > * + * {
@@ -11,49 +18,60 @@
 
 .cvv-heading {
   color: #0f172a;
-  line-height: 1.35;
+  line-height: 1.3;
   font-weight: 700;
-  margin: 20px 0 12px;
+  margin: 24px 0 12px;
+  scroll-margin-top: 84px;
 }
 
 .cvv-heading-1 { font-size: 2rem; }
 .cvv-heading-2 { font-size: 1.625rem; }
-.cvv-heading-3 { font-size: 1.375rem; }
-.cvv-heading-4 { font-size: 1.2rem; }
-.cvv-heading-5 { font-size: 1.1rem; }
+.cvv-heading-3 { font-size: 1.325rem; }
+.cvv-heading-4 { font-size: 1.15rem; }
+.cvv-heading-5 { font-size: 1.05rem; }
 .cvv-heading-6 { font-size: 1rem; }
 
 .cvv-paragraph {
   margin: 0;
-  color: #1f2937;
+  color: #334155;
+}
+
+.cvv-paragraph a {
+  color: #0f766e;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .cvv-list {
-  padding-left: 1.25rem;
   margin: 0;
+  padding-left: 24px;
+}
+
+.cvv-list-item {
+  color: #334155;
 }
 
 .cvv-list-item + .cvv-list-item {
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .cvv-table-wrap {
   overflow-x: auto;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
+  background: #ffffff;
 }
 
 .cvv-table {
   width: 100%;
   border-collapse: collapse;
-  background: #ffffff;
 }
 
 .cvv-table th,
 .cvv-table td {
   border-bottom: 1px solid #e5e7eb;
   text-align: left;
-  padding: 10px 12px;
+  padding: 12px 16px;
   vertical-align: top;
 }
 
@@ -76,16 +94,16 @@
 
 .cvv-image-placeholder {
   padding: 16px;
-  background: #f3f4f6;
-  border: 1px dashed #9ca3af;
+  background: #f8fafc;
+  border: 1px dashed #94a3b8;
   border-radius: 12px;
-  color: #374151;
+  color: #475569;
 }
 
 .cvv-image-caption {
   margin-top: 8px;
-  color: #4b5563;
-  font-size: 0.925rem;
+  color: #64748b;
+  font-size: 14px;
 }
 
 .cvv-delimiter {
@@ -99,31 +117,97 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #2563eb;
+  background: #16a34a;
   color: #ffffff;
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-weight: 600;
-  padding: 10px 16px;
-  transition: all 180ms ease;
+  padding: 12px 18px;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.22);
 }
 
 .cvv-button-cta:hover {
-  background: #1d4ed8;
+  background: #15803d;
   transform: translateY(-1px);
-}
-
-@media (max-width: 768px) {
-  .cvv-article {
-    font-size: 15px;
-    line-height: 1.65;
-  }
-
-  .cvv-heading-1 { font-size: 1.75rem; }
-  .cvv-heading-2 { font-size: 1.5rem; }
+  box-shadow: 0 10px 24px rgba(21, 128, 61, 0.28);
 }
 
 .cvv-button-cta-disabled {
   opacity: 0.6;
   pointer-events: none;
+}
+
+.cvv-toc {
+  margin: 0 0 24px;
+  padding: 16px;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+}
+
+.cvv-toc-title {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #0f172a;
+  text-transform: uppercase;
+}
+
+.cvv-toc-list,
+.cvv-toc-sublist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cvv-toc-sublist {
+  margin-top: 6px;
+  padding-left: 16px;
+}
+
+.cvv-toc-item + .cvv-toc-item {
+  margin-top: 6px;
+}
+
+.cvv-toc-link {
+  display: inline-block;
+  color: #0f172a;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.45;
+  transition: color 160ms ease;
+}
+
+.cvv-toc-link:hover {
+  color: #0f766e;
+}
+
+.cvv-toc-link.is-active {
+  color: #0f766e;
+  font-weight: 600;
+}
+
+.cvv-animate {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 380ms ease, transform 420ms ease;
+}
+
+.cvv-animate.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .cvv-article {
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .cvv-heading-1 { font-size: 1.75rem; }
+  .cvv-heading-2 { font-size: 1.45rem; }
 }
