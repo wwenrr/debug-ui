@@ -34,21 +34,26 @@
 
   const createToc = (root) => {
     const headings = Array.from(root.querySelectorAll("h2.cvv-heading, h3.cvv-heading"));
-    if (headings.length < 3) return;
+    if (headings.length < 3) return null;
 
     ensureHeadingIds(headings);
 
     const container = document.createElement("nav");
-    container.className = "cvv-toc cvv-animate";
+    container.className = "cvv-toc is-collapsed";
     container.setAttribute("aria-label", "Table of contents");
 
-    const title = document.createElement("p");
-    title.className = "cvv-toc-title";
-    title.textContent = "Contents";
-    container.appendChild(title);
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "cvv-toc-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.textContent = "Table of contents";
+
+    const panel = document.createElement("div");
+    panel.className = "cvv-toc-panel";
 
     const list = document.createElement("ul");
     list.className = "cvv-toc-list";
+
     let currentH2Item = null;
 
     headings.forEach((heading) => {
@@ -77,8 +82,15 @@
       }
     });
 
-    container.appendChild(list);
+    panel.appendChild(list);
+    container.appendChild(toggle);
+    container.appendChild(panel);
     root.insertBefore(container, root.firstChild);
+
+    toggle.addEventListener("click", () => {
+      const collapsed = container.classList.toggle("is-collapsed");
+      toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    });
 
     list.querySelectorAll("a.cvv-toc-link").forEach((link) => {
       link.addEventListener("click", (event) => {
@@ -90,6 +102,8 @@
         window.history.replaceState(null, "", `#${target.id}`);
       });
     });
+
+    return { container, links: Array.from(list.querySelectorAll(".cvv-toc-link")), headings };
   };
 
   const bindSafeCta = (root) => {
@@ -105,9 +119,7 @@
     });
   };
 
-  const bindScrollSpy = (root) => {
-    const links = Array.from(root.querySelectorAll(".cvv-toc-link"));
-    const headings = Array.from(root.querySelectorAll("h2.cvv-heading[id], h3.cvv-heading[id]"));
+  const bindScrollSpy = (links, headings) => {
     if (!links.length || !headings.length) return;
 
     const activate = (id) => {
@@ -123,7 +135,7 @@
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
         if (visible?.target?.id) activate(visible.target.id);
       },
-      { rootMargin: "-15% 0px -70% 0px", threshold: [0.1, 0.5] }
+      { rootMargin: "-18% 0px -70% 0px", threshold: [0.1, 0.5] }
     );
 
     headings.forEach((heading) => observer.observe(heading));
@@ -139,6 +151,8 @@
     if (!list || !["UL", "OL"].includes(list.tagName)) return;
 
     list.classList.add("cvv-faq-list");
+
+    const faqItems = [];
 
     Array.from(list.children).forEach((item) => {
       if (item.tagName !== "LI") return;
@@ -167,24 +181,18 @@
 
       item.appendChild(button);
       item.appendChild(panel);
+      faqItems.push(item);
     });
-  };
 
-  const bindRevealAnimation = (root) => {
-    const candidates = Array.from(root.children).filter((node) => !node.classList.contains("cvv-toc"));
-    candidates.forEach((node) => {
-      node.classList.add("cvv-animate");
-      node.classList.add("is-in");
-    });
+    faqItems.slice(0, 2).forEach((faqItem) => faqItem.classList.add("is-open"));
   };
 
   const initCvvBlocksRenderer = () => {
     document.querySelectorAll(".cvv-article").forEach((root) => {
       bindSafeCta(root);
-      createToc(root);
-      bindScrollSpy(root);
+      const toc = createToc(root);
+      if (toc) bindScrollSpy(toc.links, toc.headings);
       enhanceFaq(root);
-      bindRevealAnimation(root);
     });
   };
 
