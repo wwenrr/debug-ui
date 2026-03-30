@@ -241,6 +241,24 @@
       return;
     }
 
+    const plainPairs = [];
+    for (let index = 0; index < liNodes.length - 1; index += 2) {
+      const question = (liNodes[index].textContent || "").trim();
+      const answer = (liNodes[index + 1].textContent || "").trim();
+      if (!question || !answer) continue;
+      plainPairs.push({ question, answer });
+    }
+
+    if (plainPairs.length >= 2) {
+      list.innerHTML = "";
+      plainPairs.forEach((pair, index) => {
+        const item = buildFaqItem(pair.question, pair.answer);
+        if (index < 2) item.classList.add("is-open");
+        list.appendChild(item);
+      });
+      return;
+    }
+
     const faqItems = [];
 
     liNodes.forEach((item) => {
