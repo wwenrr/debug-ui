@@ -162,11 +162,88 @@
 
     list.classList.add("cvv-faq-list");
 
+    const liNodes = Array.from(list.children).filter((item) => item.tagName === "LI");
+
+    const normalizeQuoteText = (value) => {
+      return (value || "")
+        .replace(/[“”]/g, '"')
+        .replace(/[‘’]/g, "'")
+        .trim();
+    };
+
+    const extractLegacyFaqEntry = (text) => {
+      const normalized = normalizeQuoteText(text);
+      if (!normalized.includes('"type"') || !normalized.includes('=>')) return null;
+
+      const textMatch = normalized.match(/"text"\s*=>\s*"([^"]+)"/);
+      if (!textMatch) return null;
+
+      const levelMatch = normalized.match(/"level"\s*=>\s*(\d+)/);
+      const level = Number(levelMatch?.[1] || 0);
+
+      return {
+        text: textMatch[1].trim(),
+        isQuestion: level >= 3 || /\?$/.test(textMatch[1].trim())
+      };
+    };
+
+    const buildFaqItem = (question, answer) => {
+      const item = document.createElement("li");
+      item.className = "cvv-faq-item";
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "cvv-faq-toggle";
+      button.textContent = question;
+
+      const panel = document.createElement("div");
+      panel.className = "cvv-faq-answer";
+      panel.textContent = answer;
+
+      button.addEventListener("click", () => {
+        item.classList.toggle("is-open");
+      });
+
+      item.appendChild(button);
+      item.appendChild(panel);
+      return item;
+    };
+
+    const legacyEntries = liNodes.map((item) => extractLegacyFaqEntry(item.textContent || ""));
+    const legacyCount = legacyEntries.filter(Boolean).length;
+
+    if (legacyCount >= Math.ceil(liNodes.length / 2)) {
+      const pairs = [];
+      let pendingQuestion = "";
+
+      legacyEntries.forEach((entry) => {
+        if (!entry) return;
+
+        if (entry.isQuestion) {
+          pendingQuestion = entry.text;
+          return;
+        }
+
+        if (pendingQuestion) {
+          pairs.push({ question: pendingQuestion, answer: entry.text });
+          pendingQuestion = "";
+        }
+      });
+
+      if (!pairs.length) return;
+
+      list.innerHTML = "";
+      pairs.forEach((pair, index) => {
+        const item = buildFaqItem(pair.question, pair.answer);
+        if (index < 2) item.classList.add("is-open");
+        list.appendChild(item);
+      });
+      return;
+    }
+
     const faqItems = [];
 
-    Array.from(list.children).forEach((item) => {
-      if (item.tagName !== "LI") return;
-
+    liNodes.forEach((item) => {
       const raw = item.innerHTML;
       const segments = raw.split(/<br\s*\/?\s*>/i);
       const question = (segments.shift() || "").trim();
