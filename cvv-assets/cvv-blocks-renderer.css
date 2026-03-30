@@ -10,13 +10,13 @@
   color: var(--cvv-text);
   line-height: 1.72;
   font-size: 16px;
-  max-width: 860px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 32px;
-  background: var(--cvv-bg);
-  border: 1px solid var(--cvv-border);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .cvv-article > * + * {
@@ -32,16 +32,16 @@
   scroll-margin-top: 96px;
 }
 
-.cvv-heading-1 { font-size: 2.25rem; font-weight: 800; }
-.cvv-heading-2 { font-size: 1.75rem; }
-.cvv-heading-3 { font-size: 1.375rem; }
+.cvv-heading-1 { font-size: 2.35rem; font-weight: 700; }
+.cvv-heading-2 { font-size: 2.05rem; font-weight: 500; }
+.cvv-heading-3 { font-size: 1.45rem; font-weight: 600; }
 .cvv-heading-4 { font-size: 1.2rem; }
 .cvv-heading-5 { font-size: 1.05rem; }
 .cvv-heading-6 { font-size: 1rem; }
 
 .cvv-paragraph {
   margin: 0;
-  color: var(--cvv-text-muted);
+  color: #4b5563;
 }
 
 .cvv-paragraph strong,
@@ -66,7 +66,7 @@
 }
 
 .cvv-list-item {
-  color: var(--cvv-text-muted);
+  color: #4b5563;
 }
 
 .cvv-list-item + .cvv-list-item {
@@ -155,15 +155,12 @@
 }
 
 .cvv-toc {
-  position: sticky;
-  top: 16px;
-  z-index: 8;
-  margin: 0 0 24px;
-  padding: 16px;
-  border: 1px solid #dbeafe;
-  border-radius: 14px;
-  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
-  backdrop-filter: blur(4px);
+  position: static;
+  margin: 8px 0 24px;
+  padding: 14px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fafafa;
 }
 
 .cvv-toc-title {
@@ -251,7 +248,7 @@
 .cvv-faq-answer {
   display: none;
   padding: 0 16px 14px;
-  color: var(--cvv-text-muted);
+  color: #4b5563;
 }
 
 .cvv-faq-item.is-open .cvv-faq-answer {
@@ -259,28 +256,22 @@
 }
 
 .cvv-animate {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 360ms ease, transform 420ms ease;
+  opacity: 1;
+  transform: none;
 }
 
 .cvv-animate.is-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 @media (max-width: 768px) {
   .cvv-article {
-    padding: 18px;
-    border-radius: 14px;
+    padding: 0;
     font-size: 15px;
     line-height: 1.66;
   }
 
-  .cvv-heading-1 { font-size: 1.8rem; }
-  .cvv-heading-2 { font-size: 1.5rem; }
-
-  .cvv-toc {
-    position: static;
-  }
+  .cvv-heading-1 { font-size: 2rem; }
+  .cvv-heading-2 { font-size: 1.65rem; }
 }

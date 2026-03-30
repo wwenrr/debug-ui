@@ -172,20 +172,10 @@
 
   const bindRevealAnimation = (root) => {
     const candidates = Array.from(root.children).filter((node) => !node.classList.contains("cvv-toc"));
-    candidates.forEach((node) => node.classList.add("cvv-animate"));
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-in");
-          observer.unobserve(entry.target);
-        });
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 }
-    );
-
-    candidates.forEach((node) => observer.observe(node));
+    candidates.forEach((node) => {
+      node.classList.add("cvv-animate");
+      node.classList.add("is-in");
+    });
   };
 
   const initCvvBlocksRenderer = () => {
