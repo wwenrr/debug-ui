@@ -25,7 +25,6 @@
 
     headings.forEach((heading, index) => {
       if (heading.id) return;
-
       const base = slugify(heading.textContent || "") || `section-${index + 1}`;
       const current = seen.get(base) || 0;
       seen.set(base, current + 1);
@@ -45,12 +44,11 @@
 
     const title = document.createElement("p");
     title.className = "cvv-toc-title";
-    title.textContent = "Table of contents";
+    title.textContent = "Contents";
     container.appendChild(title);
 
     const list = document.createElement("ul");
     list.className = "cvv-toc-list";
-
     let currentH2Item = null;
 
     headings.forEach((heading) => {
@@ -97,13 +95,11 @@
   const bindSafeCta = (root) => {
     root.querySelectorAll("a.cvv-button-cta").forEach((anchor) => {
       const href = anchor.getAttribute("href") || "";
-
       if (!isSafeProtocol(href)) {
         anchor.removeAttribute("href");
         anchor.classList.add("cvv-button-cta-disabled");
         return;
       }
-
       anchor.setAttribute("target", "_blank");
       anchor.setAttribute("rel", "noopener noreferrer");
     });
@@ -127,11 +123,51 @@
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
         if (visible?.target?.id) activate(visible.target.id);
       },
-      { rootMargin: "-20% 0px -65% 0px", threshold: [0.1, 0.6] }
+      { rootMargin: "-15% 0px -70% 0px", threshold: [0.1, 0.5] }
     );
 
     headings.forEach((heading) => observer.observe(heading));
     if (headings[0]?.id) activate(headings[0].id);
+  };
+
+  const enhanceFaq = (root) => {
+    const headingCandidates = Array.from(root.querySelectorAll("h2.cvv-heading, h3.cvv-heading"));
+    const faqHeading = headingCandidates.find((heading) => /faq|câu hỏi|hoi dap/i.test(heading.textContent || ""));
+    if (!faqHeading) return;
+
+    const list = faqHeading.nextElementSibling;
+    if (!list || !["UL", "OL"].includes(list.tagName)) return;
+
+    list.classList.add("cvv-faq-list");
+
+    Array.from(list.children).forEach((item) => {
+      if (item.tagName !== "LI") return;
+
+      const raw = item.innerHTML;
+      const segments = raw.split(/<br\s*\/?\s*>/i);
+      const question = (segments.shift() || "").trim();
+      const answer = segments.join("<br>").trim();
+      if (!question || !answer) return;
+
+      item.classList.add("cvv-faq-item");
+      item.innerHTML = "";
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "cvv-faq-toggle";
+      button.innerHTML = question;
+
+      const panel = document.createElement("div");
+      panel.className = "cvv-faq-answer";
+      panel.innerHTML = answer;
+
+      button.addEventListener("click", () => {
+        item.classList.toggle("is-open");
+      });
+
+      item.appendChild(button);
+      item.appendChild(panel);
+    });
   };
 
   const bindRevealAnimation = (root) => {
@@ -146,19 +182,18 @@
           observer.unobserve(entry.target);
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 }
     );
 
     candidates.forEach((node) => observer.observe(node));
   };
 
   const initCvvBlocksRenderer = () => {
-    const rootNodes = document.querySelectorAll(".cvv-article");
-
-    rootNodes.forEach((root) => {
+    document.querySelectorAll(".cvv-article").forEach((root) => {
       bindSafeCta(root);
       createToc(root);
       bindScrollSpy(root);
+      enhanceFaq(root);
       bindRevealAnimation(root);
     });
   };
